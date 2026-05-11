@@ -9,7 +9,7 @@ on:
 env:
   HARBOR_REGISTRY: 210.90.24.172:8080
   HARBOR_PROJECT: restproject
-  STUDENT_ID: Hochul
+  STUDENT_ID: hochul
   IMAGE_NAME: resttemplateserver
 
 jobs:
