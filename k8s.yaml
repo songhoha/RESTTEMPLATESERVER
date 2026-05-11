@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: resttemplateserver
-          image: 210.90.24.172:8080/restproject/leeyoungkon/resttemplateserver:89116ccb1a0dc38720068cc4c7b28ea15f5ccab5
+          image: 210.90.24.172:8080/restproject/hochul/resttemplateserver:153c4080a9744fbd91f12bb6f4e94d05c033a869
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
