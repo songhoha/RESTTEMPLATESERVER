@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 env:
   HARBOR_REGISTRY: 210.90.24.172:8080
@@ -19,10 +20,6 @@ jobs:
     outputs:
       image_tag: ${{ steps.meta.outputs.tag }}
 
-    defaults:
-      run:
-        shell: cmd
-
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
@@ -34,15 +31,18 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      - name: Grant execute permission for mvnw
+        run: chmod +x ./mvnw
+
       - name: Build with Maven Wrapper
-        run: mvnw.cmd clean package -DskipTests
+        run: ./mvnw clean package -DskipTests
 
       - name: Set image tag
         id: meta
-        run: echo tag=%GITHUB_SHA%>> %GITHUB_OUTPUT%
+        run: echo "tag=$GITHUB_SHA" >> "$GITHUB_OUTPUT"
 
       - name: Docker login to Harbor
-        run: echo %DOCKER_PASSWORD% | docker login %HARBOR_REGISTRY% -u %DOCKER_USERNAME% --password-stdin
+        run: echo "$DOCKER_PASSWORD" | docker login "$HARBOR_REGISTRY" -u "$DOCKER_USERNAME" --password-stdin
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
